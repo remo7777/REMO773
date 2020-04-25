@@ -2,7 +2,7 @@
 echo -e "\e[34m[*]\t\e[32mpackage update & upgrade..\e[0m";
 (apt-get update;apt-get upgrade -y) > /dev/null
 echo -e "\e[34m[*]\t\e[32minstalling packages..\e[0m";
-(apt-get install git nodejs clang -y) > /dev/null
+(apt-get install git nodejs clang nodejs-lts -y) > /dev/null
 heroku4=`which heroku`
 if test -e "$heroku4" 
 then
