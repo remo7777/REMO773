@@ -6,25 +6,25 @@ SCRIPT_NAME=$(basename "$0")
 METASPLOIT_PATH="${HOME}/metasploit-framework"
 
 # set ruby version
-android=$(getprop ro.build.version.release)
-if [ ${android%%.*} -ge 7 ]; then
-    RUBYVER=2.7.0
-else
-    RUBYVER=2.6.0
-fi
+#android=$(getprop ro.build.version.release)
+#if [ ${android%%.*} -ge 7 ]; then
+#    RUBYVER=2.7.0
+#else
+#    RUBYVER=2.6.0
+#fi
 # Fix ruby bigdecimal extensions linking error.
 case "$(uname -m)" in
         aarch64)
-                export LD_PRELOAD="${PREFIX}/lib/ruby/$RUBYVER/aarch64-linux-android/bigdecimal.so:$LD_PRELOAD"
+                export LD_PRELOAD="${PREFIX}/lib/ruby/2.7.0/aarch64-linux-android/bigdecimal.so:$LD_PRELOAD"
                 ;;
         arm*)
-                export LD_PRELOAD="${PREFIX}/lib/ruby/$RUBYVER/arm-linux-androideabi/bigdecimal.so:$LD_PRELOAD"
+                export LD_PRELOAD="${PREFIX}/lib/ruby/2.7.0/arm-linux-androideabi/bigdecimal.so:$LD_PRELOAD"
                 ;;
         i686)
-                export LD_PRELOAD="${PREFIX}/lib/ruby/$RUBYVER/i686-linux-android/bigdecimal.so:$LD_PRELOAD"
+                export LD_PRELOAD="${PREFIX}/lib/ruby/2.7.0/i686-linux-android/bigdecimal.so:$LD_PRELOAD"
                 ;;
         x86_64)
-                export LD_PRELOAD="${PREFIX}/lib/ruby/$RUBYVER/x86_64-linux-android/bigdecimal.so:$LD_PRELOAD"
+                export LD_PRELOAD="${PREFIX}/lib/ruby/2.7.0/x86_64-linux-android/bigdecimal.so:$LD_PRELOAD"
                 ;;
         *)
                 ;;
