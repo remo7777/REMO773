@@ -1,3 +1,4 @@
+#! /data/data/com.termux/files/usr/bin/bash
 rm -rf $PREFIX/bin/msfconsole
 cat >> $PREFIX/bin/msfconsole << EOF
 #!/data/data/com.termux/files/usr/bin/sh
@@ -38,3 +39,5 @@ case "$SCRIPT_NAME" in
                 ;;
 esac
 EOF
+chmod 700 $PREFIX/bin/msfconsole;
+msfconsole
