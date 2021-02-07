@@ -1,4 +1,4 @@
-#! /data/data/com.termux/files/usr/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 rm -rf $PREFIX/bin/msfconsole
 cat >> $PREFIX/bin/msfconsole << EOF
 #!/data/data/com.termux/files/usr/bin/sh
