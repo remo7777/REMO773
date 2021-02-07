@@ -3,7 +3,7 @@ rm -rf $PREFIX/bin/msfconsole
 cat >> $PREFIX/bin/msfconsole << EOF
 #!/data/data/com.termux/files/usr/bin/sh
 SCRIPT_NAME=$(basename "$0")
-METASPLOIT_PATH="${HOME}/metasploit-framework"
+METASPLOIT_PATH="$PREFIX/opt/metasploit-framework/"
 
 # set ruby version
 #android=$(getprop ro.build.version.release)
