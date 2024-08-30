@@ -1,0 +1,24 @@
+-- LSP Configuration for clangd (C/C++)
+local lspconfig = require("lspconfig")
+
+lspconfig.clangd.setup {
+  cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never" },
+  on_attach = function(client, bufnr)
+    -- Enable autoformatting for C/C++
+    if client.name == "clangd" then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        callback = function() vim.lsp.buf.format({ async = false }) end,
+      })
+    end
+  end,
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+}
+
+-- clang-format configuration
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.cpp", "*.h", "*.c" },  -- Apply to C/C++ header/source files
+  callback = function()
+    vim.cmd([[%!clang-format]]) -- Format the file on save using clang-format
+  end,
+})
