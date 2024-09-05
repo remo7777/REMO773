@@ -1,24 +1,61 @@
--- LSP Configuration for clangd (C/C++)
+-- Custom filetypes setup at posish.lua
+vim.filetype.add {
+  extension = {
+    foo = "fooscript",
+  },
+  filename = {
+    ["Foofile"] = "fooscript",
+  },
+  pattern = {
+    ["~/%.config/foo/.*"] = "fooscript",
+  },
+}
+
 local lspconfig = require("lspconfig")
 
-lspconfig.clangd.setup {
-  cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never" },
+-- lua-language-server setup
+lspconfig.lua_ls.setup({
+  cmd = { "/data/data/com.termux/files/usr/bin/lua-language-server" },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,
+      },
+      telemetry = { enable = false },
+      format = {
+        enable = true, -- Enable autoformat
+      },
+    },
+  },
   on_attach = function(client, bufnr)
-    -- Enable autoformatting for C/C++
-    if client.name == "clangd" then
+    -- Enable autoformat on save
+    if client.server_capabilities.documentFormattingProvider then
       vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
         buffer = bufnr,
-        callback = function() vim.lsp.buf.format({ async = false }) end,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = bufnr })
+        end,
       })
     end
   end,
-  capabilities = require("cmp_nvim_lsp").default_capabilities(),
-}
+})
 
--- clang-format configuration
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.cpp", "*.h", "*.c" },  -- Apply to C/C++ header/source files
-  callback = function()
-    vim.cmd([[%!clang-format]]) -- Format the file on save using clang-format
-  end,
+require('lspconfig').clangd.setup({
+  cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never" },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  root_dir = require('lspconfig').util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+  settings = {
+    clangd = {
+      inlayHints = { enable = true },
+      format = { enable = true },
+    },
+  },
+  capabilities = {
+    offsetEncoding = { "utf-8" }, -- Ensure this matches other clients
+  },
 })
